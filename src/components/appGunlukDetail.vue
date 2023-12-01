@@ -1,5 +1,5 @@
 <template>
-    <div class="box" v-for="item in gunlukStore.diary" :key="item.id">
+    <div class="box">
         <div class="icerik">
             <p>{{ item.diary }}</p>
             <small class="data">{{ item.data }}</small>
@@ -12,8 +12,12 @@
 </template>
 
 <script setup>
-import { useDiaryStore } from '../stores/diaryStore.js';
-const gunlukStore = useDiaryStore();
+const props = defineProps({
+    item: {
+        type: Object,
+        required: true,
+    }
+})
 </script>
 
 <style scoped>

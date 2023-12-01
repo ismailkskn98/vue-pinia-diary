@@ -1,0 +1,144 @@
+warning: in the working copy of 'src/components/appGunlukDetail.vue', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'src/components/appMain.vue', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'src/stores/diaryStore.js', CRLF will be replaced by LF the next time Git touches it
+[1mdiff --git a/src/components/appGunlukDetail.vue b/src/components/appGunlukDetail.vue[m
+[1mindex a1372c2..319db60 100644[m
+[1m--- a/src/components/appGunlukDetail.vue[m
+[1m+++ b/src/components/appGunlukDetail.vue[m
+[36m@@ -1,5 +1,5 @@[m
+ <template>[m
+[31m-    <div class="box" v-for="item in gunlukStore.diary" :key="item.id">[m
+[32m+[m[32m    <div class="box">[m
+         <div class="icerik">[m
+             <p>{{ item.diary }}</p>[m
+             <small class="data">{{ item.data }}</small>[m
+[36m@@ -12,8 +12,12 @@[m
+ </template>[m
+ [m
+ <script setup>[m
+[31m-import { useDiaryStore } from '../stores/diaryStore.js';[m
+[31m-const gunlukStore = useDiaryStore();[m
+[32m+[m[32mconst props = defineProps({[m
+[32m+[m[32m    item: {[m
+[32m+[m[32m        type: Object,[m
+[32m+[m[32m        required: true,[m
+[32m+[m[32m    }[m
+[32m+[m[32m})[m
+ </script>[m
+ [m
+ <style scoped>[m
+[1mdiff --git a/src/components/appMain.vue b/src/components/appMain.vue[m
+[1mindex 75b1375..17c402f 100644[m
+[1m--- a/src/components/appMain.vue[m
+[1m+++ b/src/components/appMain.vue[m
+[36m@@ -1,15 +1,35 @@[m
+ <template>[m
+     <main>[m
+         <div class="container">[m
+[31m-            <div class="gunluk-listesi">[m
+[31m-                <appGunlukDetail />[m
+[32m+[m[32m            <header>[m
+[32m+[m[32m                <h4 v-if="diarysFilter === 'all'">tüm günlüklerim</h4>[m
+[32m+[m[32m                <h4 v-else-if="diarysFilter === 'favs'">sadece beğendiklerim</h4>[m
+[32m+[m
+[32m+[m[32m                <nav>[m
+[32m+[m[32m                    <button @click="diarysFilter = 'all'">Tüm günlüklerim</button>[m
+[32m+[m[32m                    <button @click="diarysFilter = 'favs'">Sadece Beğendiklerim</button>[m
+[32m+[m[32m                </nav>[m
+[32m+[m[32m            </header>[m
+[32m+[m[32m            <div class="gunluk-listesi" v-for="item in gunlukStore.diary" :key="item.id" v-if="diarysFilter === 'all'">[m
+[32m+[m[32m                <appGunlukDetail :item="item" />[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="gunluk-listesi" v-for="(item, i) in gunlukStore.favs" :key="i" v-else-if="diarysFilter === 'favs'">[m
+[32m+[m[32m                <appGunlukDetail :item="item" />[m
+[32m+[m[32m            </div>[m
+[32m+[m[32m            <div class="diaryCount">[m
+[32m+[m[32m                <p v-if="diarysFilter === 'all'">Toplam <span>{{ gunlukStore.totalCount }}</span> kayıt var</p>[m
+[32m+[m[32m                <p v-else-if="diarysFilter === 'favs'">Toplam <span>{{ gunlukStore.favCount }}</span> kayıt var</p>[m
+             </div>[m
+         </div>[m
+     </main>[m
+ </template>[m
+ [m
+ <script setup>[m
+[32m+[m[32mimport { ref } from 'vue';[m
+ import appGunlukDetail from './appGunlukDetail.vue';[m
+[32m+[m[32mimport { useDiaryStore } from '../stores/diaryStore.js';[m
+[32m+[m[32mconst gunlukStore = useDiaryStore();[m
+[32m+[m[32mconst diarysFilter = ref('all');[m
+ </script>[m
+ [m
+ <style scoped>[m
+[36m@@ -22,4 +42,50 @@[m [mmain .container {[m
+     max-width: 720px;[m
+     width: 100%;[m
+ }[m
+[32m+[m
+[32m+[m[32mmain .container .diaryCount {[m
+[32m+[m[32m    display: flex;[m
+[32m+[m[32m    align-items: center;[m
+[32m+[m[32m    justify-content: flex-end;[m
+[32m+[m[32m    margin-top: 10px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mmain .container .diaryCount span {[m
+[32m+[m[32m    color: #52ce63;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mmain .container header {[m
+[32m+[m[32m    display: flex;[m
+[32m+[m[32m    justify-content: space-between;[m
+[32m+[m[32m    align-items: center;[m
+[32m+[m[32m    margin-top: 15px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mmain .container header h4 {[m
+[32m+[m[32m    text-transform: capitalize;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mmain .container header nav {[m
+[32m+[m[32m    display: flex;[m
+[32m+[m[32m    justify-content: center;[m
+[32m+[m[32m    align-items: center;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mmain .container nav button {[m
+[32m+[m[32m    height: 35px;[m
+[32m+[m[32m    margin-left: 5px;[m
+[32m+[m[32m    padding: 0 15px;[m
+[32m+[m[32m    border: 1px solid #e2e2e2;[m
+[32m+[m[32m    background-color: #ddd;[m
+[32m+[m[32m    cursor: pointer;[m
+[32m+[m[32m    transition: all .2s ease;[m
+[32m+[m[32m    text-transform: capitalize;[m
+[32m+[m[32m    letter-spacing: 1px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mmain .container nav button:hover {[m
+[32m+[m[32m    background-color: #ffd654;[m
+[32m+[m[32m    border: 1px solid #ffd654;[m
+[32m+[m[32m    color: #333;[m
+[32m+[m[32m}[m
+ </style>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/stores/diaryStore.js b/src/stores/diaryStore.js[m
+[1mindex 0ed199e..f1479a9 100644[m
+[1m--- a/src/stores/diaryStore.js[m
+[1m+++ b/src/stores/diaryStore.js[m
+[36m@@ -4,8 +4,13 @@[m [mexport const useDiaryStore = defineStore('diaryStore', {[m
+     state: () => ({[m
+         diary: [[m
+             { id: 1, diary: "Bugün hava bulutlu", data: "11.06.2023", isFav: false },[m
+[31m-            { id: 2, diary: "Bugün pinia uygulamasına başladık", data: "12.06.2023", isFav: false }[m
+[32m+[m[32m            { id: 2, diary: "Bugün pinia uygulamasına başladık", data: "12.06.2023", isFav: true }[m
+         ],[m
+         appTitle: 'kişiler günlüğüm',[m
+[31m-    })[m
+[32m+[m[32m    }),[m
+[32m+[m[32m    getters: {[m
+[32m+[m[32m        favs: (state) => state.diary.filter(gunluk => gunluk.isFav),[m
+[32m+[m[32m        totalCount: (state) => state.diary.length,[m
+[32m+[m[32m        favCount: (state) => state.diary.filter(gunluk => gunluk.isFav).length,[m
+[32m+[m[32m    }[m
+ })[m
+\ No newline at end of file[m
