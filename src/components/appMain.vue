@@ -1,6 +1,7 @@
 <template>
     <main>
         <div class="container">
+            <AppNewDiary />
             <header>
                 <h4 v-if="diarysFilter === 'all'">tüm günlüklerim</h4>
                 <h4 v-else-if="diarysFilter === 'favs'">sadece beğendiklerim</h4>
@@ -28,6 +29,7 @@
 import { ref } from 'vue';
 import appGunlukDetail from './appGunlukDetail.vue';
 import { useDiaryStore } from '../stores/diaryStore.js';
+import AppNewDiary from './appNewDiary.vue';
 const gunlukStore = useDiaryStore();
 const diarysFilter = ref('all');
 </script>
