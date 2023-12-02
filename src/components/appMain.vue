@@ -11,15 +11,15 @@
                     <button @click="diarysFilter = 'favs'">Sadece Beğendiklerim</button>
                 </nav>
             </header>
-            <div class="gunluk-listesi" v-for="item in gunlukStore.diary" :key="item.id" v-if="diarysFilter === 'all'">
+            <div class="gunluk-listesi" v-for="item in diary" :key="item.id" v-if="diarysFilter === 'all'">
                 <appGunlukDetail :item="item" />
             </div>
-            <div class="gunluk-listesi" v-for="(item, i) in gunlukStore.favs" :key="i" v-else-if="diarysFilter === 'favs'">
+            <div class="gunluk-listesi" v-for="(item, i) in favs" :key="i" v-else-if="diarysFilter === 'favs'">
                 <appGunlukDetail :item="item" />
             </div>
             <div class="diaryCount">
-                <p v-if="diarysFilter === 'all'">Toplam <span>{{ gunlukStore.totalCount }}</span> kayıt var</p>
-                <p v-else-if="diarysFilter === 'favs'">Toplam <span>{{ gunlukStore.favCount }}</span> kayıt var</p>
+                <p v-if="diarysFilter === 'all'">Toplam <span>{{ totalCount }}</span> kayıt var</p>
+                <p v-else-if="diarysFilter === 'favs'">Toplam <span>{{ favCount }}</span> kayıt var</p>
             </div>
         </div>
     </main>
@@ -27,10 +27,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import appGunlukDetail from './appGunlukDetail.vue';
 import { useDiaryStore } from '../stores/diaryStore.js';
+import { storeToRefs } from 'pinia'
+import appGunlukDetail from './appGunlukDetail.vue';
 import AppNewDiary from './appNewDiary.vue';
+
 const gunlukStore = useDiaryStore();
+const { diary, favCount, favs, totalCount } = storeToRefs(gunlukStore); // sadece getters ve state için geçerli
 const diarysFilter = ref('all');
 </script>
 

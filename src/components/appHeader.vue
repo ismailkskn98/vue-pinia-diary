@@ -2,15 +2,16 @@
     <header>
         <div class="container">
             <img src="../assets/pinia-logo.svg" alt="pinia-logo" title="pinia">
-            <h1>{{ gunlukStore.appTitle }}</h1>
+            <h1>{{ appTitle }}</h1>
         </div>
     </header>
 </template>
 
 <script setup>
 import { useDiaryStore } from '../stores/diaryStore.js';
+import { storeToRefs } from 'pinia';
 const gunlukStore = useDiaryStore();
-
+const { appTitle } = storeToRefs(gunlukStore); // sadece getters ve state için geçerli
 
 </script>
 

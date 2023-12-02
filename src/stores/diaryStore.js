@@ -4,7 +4,8 @@ export const useDiaryStore = defineStore('diaryStore', {
     state: () => ({
         diary: [],
         appTitle: 'kişisel günlüğüm',
-        url: 'http://localhost:3000/diary'
+        url: 'http://localhost:3000/diary',
+        loading: false,
     }),
     getters: {
         favs: (state) => state.diary.filter(gunluk => gunluk.isFav),
@@ -13,9 +14,11 @@ export const useDiaryStore = defineStore('diaryStore', {
     },
     actions: {
         async getDiary() {
+            this.loading = true;
             const response = await fetch(this.url, { method: 'GET' });
             const data = await response.json();
             this.diary = data;
+            this.loading = false;
         },
         async newDiary(diary) {
             const res = await this.diary.find(item => item.diary == diary.diary);
